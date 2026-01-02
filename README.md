@@ -1,12 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Website</title>
+  <title>My Personal Site</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #eaf6ff; /* light blue background */
+      color: #03396c;
+    }
+
+    header {
+      background-color: #b3ddff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    section {
+      background-color: #ffffff;
+      margin: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      color: #025aa5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #b3ddff;
+      font-size: 14px;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Hello 👋</h1>
-  <p>This is my first website.</p>
-  <p>I will upload my notes here.</p>
-  <p> now a days i am very depressed there is no one talk with me. so i choose this way to express my feelings. if you are intrested save this site.</p>
+
+  <header>
+    <h1>Welcome to My Personal Site</h1>
+    <p>A place for my thoughts and study notes</p>
+  </header>
+
+  <section>
+    <h2>About Me</h2>
+    <p>
+      Welcome to my personal site. Here, I will write about my daily life
+      incidents and my sad stories. This website is my personal space to
+      express myself.
+    </p>
+  </section>
+
+  <section>
+    <h2>B.E Notes</h2>
+    <p>
+      I will upload notes related to my B.E subjects here so that I and my
+      friends can read them anytime.
+    </p>
+  </section>
+
+  <footer>
+    © 2026 | My Personal Website
+  </footer>
+
 </body>
 </html>

@@ -1,2 +1,11 @@
-# karibasu.github.io
-blogs,sad stories,and vtu BE notes
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Website</title>
+</head>
+<body>
+  <h1>Hello 👋</h1>
+  <p>This is my first website.</p>
+  <p>I will upload my notes here.</p>
+</body>
+</html>

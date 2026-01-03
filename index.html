@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>My Personal Site</title>
 
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #eaf6ff; /* light blue background */
+      background-color: #eaf6ff;
       color: #03396c;
     }
 
@@ -17,16 +18,62 @@
       text-align: center;
     }
 
+    nav {
+      text-align: center;
+      background-color: #d9efff;
+      padding: 10px;
+    }
+
+    nav button {
+      margin: 5px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4da3ff;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    nav button:hover {
+      background-color: #1e81ce;
+      transform: scale(1.05);
+    }
+
     section {
-      background-color: #ffffff;
+      background-color: white;
       margin: 20px;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: none;
     }
 
     h1, h2 {
       color: #025aa5;
+    }
+
+    .notes {
+      display: none;
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #f0f8ff;
+      border-radius: 6px;
+    }
+
+    .action-btn {
+      margin-top: 10px;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 5px;
+      background-color: #6bbcff;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .action-btn:hover {
+      transform: scale(1.05);
     }
 
     footer {
@@ -40,35 +87,67 @@
 
 <body>
 
-  <header>
-    <h1>Welcome to My Personal Site</h1>
-    <p>A place for my thoughts and study notes</p>
-  </header>
+<header>
+  <h1>Welcome to My Personal Site</h1>
+  <p>A place for my thoughts and study notes</p>
+</header>
 
-  <section>
-    <h2>About Me</h2>
-    <p>
-      Welcome to my personal site. Here, I will write about my daily life
-      incidents and my sad stories. This website is my personal space to
-      express myself.
-    </p>
-  </section>
+<nav>
+  <button onclick="showMainSection('about')">About Me</button>
+  <button onclick="showMainSection('stories')">Sad Stories</button>
+  <button onclick="showMainSection('be')">B.E Notes</button>
+</nav>
 
-  <section>
-    <h2>B.E Notes</h2>
-    <p>
-      I will upload notes related to my B.E subjects here so that I and my
-      friends can read them anytime.
-    </p>
-  </section>
+<section id="about">
+  <h2>About Me</h2>
+  <p>
+    Welcome to my personal site. Here, I will write about my daily life
+    incidents and my sad stories. I will also upload my B.E notes so that
+    I and my friends can read them anytime.
+  </p>
+</section>
 
-  <footer>
-    © 2026 | My Personal Website
-  </footer>
-  <script>
+<section id="stories">
+  <h2>Sad Stories / Blog</h2>
+  <p id="storyText">Click the button to read my stories.</p>
+  <button class="action-btn" onclick="nextStory()">Read Next Story</button>
+</section>
+
+<section id="be">
+  <h2>B.E Notes</h2>
+
+  <button class="action-btn" onclick="showNotes('maths')">Maths</button>
+  <button class="action-btn" onclick="showNotes('physics')">Physics</button>
+  <button class="action-btn" onclick="showNotes('c')">C Programming</button>
+  <button class="action-btn" onclick="showNotes('ece')">ECE</button>
+
+  <div id="maths" class="notes">
+    <p>Maths notes will be uploaded here.</p>
+  </div>
+
+  <div id="physics" class="notes">
+    <p>Physics notes will be uploaded here.</p>
+  </div>
+
+  <div id="c" class="notes">
+    <p>C Programming notes will be uploaded here.</p>
+  </div>
+
+  <div id="ece" class="notes">
+    <p>ECE notes will be uploaded here.</p>
+  </div>
+</section>
+
+<footer>
+  © 2026 | My Personal Website
+</footer>
+
+<script>
   function showMainSection(id) {
-    document.getElementById("be").style.display = "none";
-    document.getElementById("stories").style.display = "none";
+    let sections = document.getElementsByTagName("section");
+    for (let i = 0; i < sections.length; i++) {
+      sections[i].style.display = "none";
+    }
     document.getElementById(id).style.display = "block";
   }
 
@@ -92,8 +171,10 @@
     document.getElementById("storyText").innerText = stories[storyIndex];
     storyIndex = (storyIndex + 1) % stories.length;
   }
+
+  // Show About section by default
+  showMainSection('about');
 </script>
 
 </body>
 </html>
-

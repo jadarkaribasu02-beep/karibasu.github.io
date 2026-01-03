@@ -65,6 +65,35 @@
   <footer>
     © 2026 | My Personal Website
   </footer>
+  <script>
+  function showMainSection(id) {
+    document.getElementById("be").style.display = "none";
+    document.getElementById("stories").style.display = "none";
+    document.getElementById(id).style.display = "block";
+  }
+
+  function showNotes(subjectId) {
+    let allNotes = document.getElementsByClassName("notes");
+    for (let i = 0; i < allNotes.length; i++) {
+      allNotes[i].style.display = "none";
+    }
+    document.getElementById(subjectId).style.display = "block";
+  }
+
+  let stories = [
+    "Some days are heavy, but I still move forward.",
+    "Silence sometimes hurts more than words.",
+    "Even sadness teaches important lessons."
+  ];
+
+  let storyIndex = 0;
+
+  function nextStory() {
+    document.getElementById("storyText").innerText = stories[storyIndex];
+    storyIndex = (storyIndex + 1) % stories.length;
+  }
+</script>
 
 </body>
 </html>
+

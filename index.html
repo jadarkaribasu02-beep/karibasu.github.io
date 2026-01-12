@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Study Website</title>
+  <title>My Blog Website</title>
   <style>
+    /* General Styles */
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f9f9f9;
       margin: 0;
       padding: 0;
+      background: #f9f9f9;
       color: #333;
     }
 
     header {
-      background: linear-gradient(90deg, #a8dadc, #f1faee);
+      background: linear-gradient(90deg, #ffafcc, #a8dadc);
       padding: 25px;
       text-align: center;
       font-size: 2em;
@@ -66,27 +67,64 @@
       animation: fadeInUp 1.5s ease;
     }
 
-    .notes {
+    /* Blog Section */
+    .blog-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 25px;
       margin-top: 30px;
     }
 
-    .note-btn {
-      background: #f1faee;
-      border: 2px solid #457b9d;
+    .blog-card {
+      background: #ffffff;
       border-radius: 12px;
-      padding: 25px;
-      font-size: 1.2em;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      padding: 20px;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
       cursor: pointer;
-      transition: transform 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
     }
 
-    .note-btn:hover {
-      transform: translateY(-8px) scale(1.08);
-      background-color: #a8dadc;
-      box-shadow: 0 8px 20px rgba(69, 123, 157, 0.3);
+    .blog-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 10px 25px rgba(69, 123, 157, 0.3);
+    }
+
+    .blog-card h3 {
+      color: #1d3557;
+    }
+
+    .blog-card p {
+      color: #555;
+    }
+
+    /* Upload Form */
+    .upload-form {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .upload-form input, .upload-form textarea {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #a8dadc;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+
+    .upload-form button {
+      background: #457b9d;
+      color: #fff;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .upload-form button:hover {
+      background: #1d3557;
+      transform: scale(1.05);
     }
 
     /* Animations */
@@ -102,7 +140,52 @@
   </style>
 </head>
 <body>
-  <header>My Study Website</header>
+  <header>My Blog Website</header>
 
   <nav>
-    <a href="#blogs">
+    <a href="#blogs">Blogs</a>
+    <a href="#upload">Upload Blog</a>
+  </nav>
+
+  <!-- Blog Section -->
+  <section id="blogs">
+    <h2>Latest Blogs</h2>
+    <div class="blog-container" id="blogContainer">
+      <div class="blog-card">
+        <h3>Sample Blog Title</h3>
+        <p>This is a sample blog post. You can replace it with your own content.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upload Blog Section -->
+  <section id="upload">
+    <h2>Upload Your Blog</h2>
+    <form class="upload-form" id="blogForm">
+      <input type="text" id="title" placeholder="Blog Title" required><br>
+      <textarea id="content" rows="5" placeholder="Write your blog here..." required></textarea><br>
+      <button type="submit">Add Blog</button>
+    </form>
+  </section>
+
+  <script>
+    // Simple blog upload functionality
+    const blogForm = document.getElementById('blogForm');
+    const blogContainer = document.getElementById('blogContainer');
+
+    blogForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const title = document.getElementById('title').value;
+      const content = document.getElementById('content').value;
+
+      const blogCard = document.createElement('div');
+      blogCard.classList.add('blog-card');
+      blogCard.innerHTML = `<h3>${title}</h3><p>${content}</p>`;
+
+      blogContainer.appendChild(blogCard);
+
+      blogForm.reset();
+    });
+  </script>
+</body>
+</html>

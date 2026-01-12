@@ -1,70 +1,111 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Personal Site</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Study Website</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #eaf6ff; /* light blue background */
-      color: #03396c;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
     }
 
     header {
-      background-color: #b3ddff;
+      background: #a8dadc;
       padding: 20px;
       text-align: center;
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #1d3557;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #f1faee;
+      padding: 10px;
+    }
+
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #1d3557;
+      font-weight: bold;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: #457b9d;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #457b9d;
+    }
+
+    nav a:hover::after {
+      width: 100%;
     }
 
     section {
-      background-color: #ffffff;
-      margin: 20px;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    h1, h2 {
-      color: #025aa5;
-    }
-
-    footer {
+      padding: 40px;
       text-align: center;
-      padding: 10px;
-      background-color: #b3ddff;
-      font-size: 14px;
+    }
+
+    .notes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .note-btn {
+      background: #f1faee;
+      border: 2px solid #457b9d;
+      border-radius: 8px;
+      padding: 20px;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .note-btn:hover {
+      transform: scale(1.05);
+      background-color: #a8dadc;
     }
   </style>
 </head>
-
 <body>
+  <header>My Study Website</header>
 
-  <header>
-    <h1>Welcome to My Personal Site</h1>
-    <p>A place for my thoughts and study notes</p>
-  </header>
+  <nav>
+    <a href="#blogs">Blogs</a>
+    <a href="#notes">Notes</a>
+  </nav>
 
-  <section>
-    <h2>About Me</h2>
-    <p>
-      Welcome to my personal site. Here, I will write about my daily life
-      incidents and my sad stories. This website is my personal space to
-      express myself.
-    </p>
+  <section id="blogs">
+    <h2>Blogs</h2>
+    <p>Welcome to the blog section! Share your thoughts, updates, and articles here.</p>
   </section>
 
-  <section>
-    <h2>B.E Notes</h2>
-    <p>
-      I will upload notes related to my B.E subjects here so that I and my
-      friends can read them anytime.
-    </p>
+  <section id="notes">
+    <h2>Notes</h2>
+    <div class="notes">
+      <button class="note-btn">Physics</button>
+      <button class="note-btn">Maths</button>
+      <button class="note-btn">C Programming</button>
+      <button class="note-btn">Electronics & Communications</button>
+    </div>
   </section>
-
-  <footer>
-    © 2026 | My Personal Website
-  </footer>
-
 </body>
 </html>

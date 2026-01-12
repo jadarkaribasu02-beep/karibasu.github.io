@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Study Website</title>
+  <title>when you sad look at me you will be happy.</title>
   <style>
     body {
       font-family: Arial, sans-serif;

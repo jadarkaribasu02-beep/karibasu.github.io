@@ -2,179 +2,181 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Karibasu Blog</title>
+<title>karibasu | Blog</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: #f5f9ff;
-  color: #333;
+  background: #f5faff;
+  color: #1d3557;
 }
 
-/* HEADER */
+/* Header */
 header {
-  background: linear-gradient(90deg, #74c0fc, #a5d8ff);
+  background: linear-gradient(90deg, #a8dadc, #bde0fe);
   padding: 25px;
   text-align: center;
-  font-size: 2.2em;
+  font-size: 28px;
   font-weight: bold;
-  color: #0b3558;
+  letter-spacing: 2px;
 }
 
-/* BUTTON */
-.action-btn {
-  margin: 30px auto;
-  display: block;
-  padding: 14px 30px;
-  font-size: 1.1em;
+/* Buttons */
+button {
+  background: #457b9d;
+  color: white;
   border: none;
+  padding: 12px 25px;
   border-radius: 30px;
-  background: #4dabf7;
-  color: white;
   cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
+  font-size: 16px;
+  transition: all 0.3s ease;
 }
 
-.action-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+button:hover {
+  background: #1d3557;
+  transform: scale(1.1);
 }
 
-/* LOGIN */
-.login-box, .editor {
-  display: none;
-  background: white;
-  width: 90%;
-  max-width: 500px;
-  margin: 20px auto;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-  animation: fadeIn 0.6s ease;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 8px;
-  border: 2px solid #a5d8ff;
-  font-size: 1em;
-}
-
-textarea {
-  height: 120px;
-}
-
-button.submit {
-  margin-top: 15px;
-  background: #1c7ed6;
-  color: white;
-  border: none;
-  padding: 12px;
-  width: 100%;
-  border-radius: 8px;
-  font-size: 1em;
-  cursor: pointer;
-}
-
-/* BLOGS */
-.blogs {
-  padding: 30px;
-  max-width: 900px;
-  margin: auto;
+/* Sections */
+section {
+  padding: 40px;
+  text-align: center;
 }
 
 .blog-card {
   background: white;
   padding: 20px;
+  margin: 15px auto;
+  max-width: 600px;
   border-radius: 12px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
-  animation: slideUp 0.6s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  animation: fadeUp 0.6s ease;
 }
 
-.blog-card h3 {
-  margin-top: 0;
-  color: #1c7ed6;
+/* Login Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
 }
 
-/* ANIMATIONS */
-@keyframes fadeIn {
-  from {opacity: 0; transform: scale(0.9);}
-  to {opacity: 1; transform: scale(1);}
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  width: 300px;
+  text-align: center;
 }
 
-@keyframes slideUp {
-  from {opacity: 0; transform: translateY(20px);}
-  to {opacity: 1; transform: translateY(0);}
+input, textarea {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
 
 <body>
 
-<header>Karibasu</header>
+<header>karibasu</header>
 
-<button class="action-btn" onclick="openLogin()">✍️ Write a Blog</button>
+<section>
+  <button onclick="openLogin()">✍ Write Blog (Admin)</button>
+</section>
 
-<!-- LOGIN -->
-<div class="login-box" id="loginBox">
-  <h2>Admin Login</h2>
-  <input type="password" id="adminPass" placeholder="Enter admin password">
-  <button class="submit" onclick="login()">Login</button>
-</div>
+<section id="adminPanel" style="display:none;">
+  <h2>Admin Panel</h2>
+  <input id="title" placeholder="Blog title">
+  <textarea id="content" rows="5" placeholder="Write your blog..."></textarea><br>
+  <button onclick="addBlog()">Post Blog</button>
+</section>
 
-<!-- EDITOR -->
-<div class="editor" id="editor">
-  <h2>Write New Blog</h2>
-  <input type="text" id="title" placeholder="Blog title">
-  <textarea id="content" placeholder="Write your blog here..."></textarea>
-  <button class="submit" onclick="postBlog()">Post Blog</button>
-</div>
-
-<!-- BLOG DISPLAY -->
-<div class="blogs" id="blogs">
+<section>
   <h2>Blogs</h2>
+  <div id="blogs"></div>
+</section>
+
+<!-- Login Modal -->
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+    <h3>Admin Login</h3>
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
 </div>
 
 <script>
 const ADMIN_PASSWORD = "karibasu29";
 
+/* Open login */
 function openLogin() {
-  document.getElementById("loginBox").style.display = "block";
+  document.getElementById("loginModal").style.display = "flex";
 }
 
+/* Login */
 function login() {
-  const pass = document.getElementById("adminPass").value;
+  const pass = document.getElementById("password").value;
   if (pass === ADMIN_PASSWORD) {
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("editor").style.display = "block";
+    localStorage.setItem("admin", "true");
+    document.getElementById("loginModal").style.display = "none";
+    document.getElementById("adminPanel").style.display = "block";
   } else {
     alert("Wrong password");
   }
 }
 
-function postBlog() {
+/* Add blog */
+function addBlog() {
   const title = document.getElementById("title").value;
   const content = document.getElementById("content").value;
 
   if (!title || !content) {
-    alert("Fill all fields");
+    alert("Write something first");
     return;
   }
 
-  const blog = document.createElement("div");
-  blog.className = "blog-card";
-  blog.innerHTML = `<h3>${title}</h3><p>${content}</p>`;
-
-  document.getElementById("blogs").appendChild(blog);
+  const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+  blogs.push({ title, content });
+  localStorage.setItem("blogs", JSON.stringify(blogs));
 
   document.getElementById("title").value = "";
   document.getElementById("content").value = "";
+  loadBlogs();
 }
+
+/* Load blogs */
+function loadBlogs() {
+  const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+  const container = document.getElementById("blogs");
+  container.innerHTML = "";
+
+  blogs.forEach(b => {
+    const div = document.createElement("div");
+    div.className = "blog-card";
+    div.innerHTML = `<h3>${b.title}</h3><p>${b.content}</p>`;
+    container.appendChild(div);
+  });
+}
+
+/* On load */
+if (localStorage.getItem("admin") === "true") {
+  document.getElementById("adminPanel").style.display = "block";
+}
+loadBlogs();
 </script>
 
 </body>

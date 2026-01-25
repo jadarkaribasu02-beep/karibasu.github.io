@@ -1,492 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Study Notes Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#0f1220;
-      --panel:#171a2b;
-      --accent:#6c8cff;
-      --accent-2:#ff7aa2;
-      --text:#e8ecff;
-      --muted:#a9b0d9;
-      --success:#4cd4a0;
-      --danger:#ff6b6b;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-      --radius:16px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 600px at 10% -10%, rgba(108,140,255,.15), transparent 60%),
-        radial-gradient(900px 500px at 90% 110%, rgba(255,122,162,.12), transparent 60%),
-        linear-gradient(180deg, #0b0e1a 0%, #0f1220 100%);
-      overflow-x:hidden;
-    }
-
-    /* Header / Nav */
-    header{
-      position:sticky; top:0; z-index:50;
-      backdrop-filter: blur(10px);
-      background:linear-gradient(180deg, rgba(15,18,32,.85), rgba(15,18,32,.65));
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
-    .nav{
-      max-width:1100px; margin:0 auto; padding:14px 20px;
-      display:flex; align-items:center; gap:16px;
-    }
-    .brand{
-      font-weight:700; letter-spacing:.3px; font-size:1.05rem;
-      background:linear-gradient(90deg, var(--accent), var(--accent-2));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-    }
-    .nav-links{margin-left:auto; display:flex; gap:8px; flex-wrap:wrap}
-    .nav-links button{
-      border:none; padding:10px 14px; border-radius:12px;
-      color:var(--text); background:transparent; cursor:pointer;
-      transition:transform .2s ease, background .2s ease, color .2s ease;
-    }
-    .nav-links button:hover{transform:translateY(-2px); background:rgba(255,255,255,.06)}
-    .nav-links button.active{
-      background:linear-gradient(90deg, rgba(108,140,255,.25), rgba(255,122,162,.25));
-      color:#fff;
-    }
-
-    /* Hero */
-    .hero{
-      max-width:1100px; margin:40px auto 0; padding:24px 20px;
-      display:grid; grid-template-columns:1.2fr .8fr; gap:24px;
-    }
-    .card{
-      background:linear-gradient(180deg, rgba(23,26,43,.9), rgba(23,26,43,.75));
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:var(--radius); box-shadow:var(--shadow);
-      overflow:hidden; position:relative;
-    }
-    .card .content{padding:24px}
-    .title{font-size:2rem; font-weight:700; margin:0 0 10px}
-    .subtitle{color:var(--muted); margin:0 0 18px}
-    .cta{
-      display:flex; gap:12px; flex-wrap:wrap;
-    }
-    .btn{
-      border:none; padding:12px 16px; border-radius:12px; cursor:pointer;
-      color:#fff; font-weight:600; letter-spacing:.2px;
-      background:linear-gradient(90deg, var(--accent), #8aa2ff);
-      box-shadow:0 8px 20px rgba(108,140,255,.35);
-      transition:transform .2s ease, box-shadow .2s ease, filter .2s ease;
-    }
-    .btn:hover{transform:translateY(-2px); box-shadow:0 12px 26px rgba(108,140,255,.45)}
-    .btn.secondary{
-      background:linear-gradient(90deg, #ff7aa2, #ff9fb8);
-      box-shadow:0 8px 20px rgba(255,122,162,.35);
-    }
-
-    /* Sections container */
-    .sections{max-width:1100px; margin:20px auto; padding:0 20px}
-    section{
-      margin:24px 0; opacity:0; transform:translateY(12px);
-      transition:opacity .4s ease, transform .4s ease;
-    }
-    section.active{opacity:1; transform:translateY(0)}
-
-    /* Notes panel */
-    .notes-panel{
-      display:grid; grid-template-columns:280px 1fr; gap:20px;
-    }
-    .sidebar{
-      background:linear-gradient(180deg, rgba(23,26,43,.95), rgba(23,26,43,.8));
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:var(--radius); padding:16px;
-    }
-    .sidebar h3{margin:0 0 10px}
-    .sub-list{display:flex; flex-direction:column; gap:8px}
-    .sub-list button{
-      border:none; padding:10px 12px; border-radius:10px; text-align:left;
-      background:rgba(255,255,255,.04); color:var(--text); cursor:pointer;
-      transition:background .2s ease, transform .2s ease;
-    }
-    .sub-list button:hover{background:rgba(255,255,255,.08); transform:translateX(2px)}
-    .sub-list button.active{
-      background:linear-gradient(90deg, rgba(108,140,255,.25), rgba(255,122,162,.25));
-    }
-
-    .notes-content{
-      background:linear-gradient(180deg, rgba(23,26,43,.95), rgba(23,26,43,.8));
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:var(--radius); padding:16px;
-    }
-    .toolbar{
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px;
-    }
-    .input, .select{
-      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08);
-      color:var(--text); padding:10px 12px; border-radius:10px; outline:none;
-    }
-    .input::placeholder{color:var(--muted)}
-    .ghost{
-      background:transparent; border:1px dashed rgba(255,255,255,.18);
-      color:var(--muted); padding:10px 12px; border-radius:10px; cursor:pointer;
-      transition:background .2s ease, color .2s ease;
-    }
-    .ghost:hover{background:rgba(255,255,255,.06); color:#fff}
-
-    .note-card{
-      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
-      border-radius:12px; padding:12px; margin:10px 0; position:relative;
-      transition:transform .2s ease, background .2s ease;
-    }
-    .note-card:hover{transform:translateY(-2px); background:rgba(255,255,255,.06)}
-    .note-title{font-weight:600; margin:0 0 6px}
-    .note-meta{color:var(--muted); font-size:.9rem; margin-bottom:8px}
-    .note-actions{display:flex; gap:8px}
-    .icon-btn{
-      border:none; background:rgba(255,255,255,.06); color:#fff;
-      padding:8px 10px; border-radius:10px; cursor:pointer;
-      transition:background .2s ease, transform .2s ease;
-    }
-    .icon-btn:hover{background:rgba(255,255,255,.12); transform:translateY(-1px)}
-    .icon-danger{background:rgba(255,107,107,.18)}
-    .icon-danger:hover{background:rgba(255,107,107,.28)}
-
-    /* Modal */
-    .modal-backdrop{
-      position:fixed; inset:0; background:rgba(0,0,0,.5);
-      display:none; align-items:center; justify-content:center; z-index:100;
-    }
-    .modal{
-      width:min(560px, 92vw);
-      background:linear-gradient(180deg, rgba(23,26,43,.98), rgba(23,26,43,.9));
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:16px; box-shadow:var(--shadow);
-      overflow:hidden;
-      transform:translateY(12px); opacity:0;
-      transition:transform .25s ease, opacity .25s ease;
-    }
-    .modal.show{transform:translateY(0); opacity:1}
-    .modal-header{
-      padding:14px 16px; border-bottom:1px solid rgba(255,255,255,.06);
-      display:flex; justify-content:space-between; align-items:center;
-    }
-    .modal-body{padding:16px; display:grid; gap:10px}
-    .modal-footer{padding:12px 16px; display:flex; gap:10px; justify-content:flex-end}
-
-    /* Footer */
-    footer{
-      max-width:1100px; margin:30px auto; padding:0 20px 30px;
-      color:var(--muted);
-    }
-
-    /* Responsive */
-    @media (max-width:900px){
-      .hero{grid-template-columns:1fr}
-      .notes-panel{grid-template-columns:1fr}
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karibasu Jadar's Blog & Notes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
+            color: #333;
+            animation: backgroundShift 10s infinite alternate;
+        }
+        @keyframes backgroundShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin: 0;
+            color: #ff6b6b;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        nav {
+            background: #4ecdc4;
+            padding: 10px;
+            text-align: center;
+        }
+        nav button {
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        nav button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.2);
+        }
+        nav button:active {
+            transform: scale(0.95);
+        }
+        .section {
+            display: none;
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .active {
+            display: block;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .tab-button {
+            background: #ffeaa7;
+            border: none;
+            padding: 10px 15px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .tab-button:hover {
+            background: #fab1a0;
+            transform: translateY(-5px);
+        }
+        .tab-button.active {
+            background: #fd79a8;
+            color: white;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #a29bfe;
+        }
+        .blog-post {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="nav">
-      <div class="brand">Study Notes Hub</div>
-      <div class="nav-links">
-        <button class="active" data-target="home" title="Press 1">Home</button>
-        <button data-target="notes" title="Press 2">Notes</button>
-        <button data-target="about" title="Press 3">About</button>
-        <button data-target="contact" title="Press 4">Contact</button>
-      </div>
-    </div>
-  </header>
+    <header>
+        <h1>Karibasu Jadar's Blog & Notes</h1>
+    </header>
+    <nav>
+        <button onclick="showSection('blog')">Blog</button>
+        <button onclick="showSection('notes')">Notes</button>
+    </nav>
 
-  <main>
-    <!-- Hero -->
-    <div class="hero">
-      <div class="card">
-        <div class="content">
-          <h1 class="title">Organize your learning—beautifully</h1>
-          <p class="subtitle">Create, upload, and search notes across Maths, Physics, C Programming, and ECE with smooth animations and quick actions.</p>
-          <div class="cta">
-            <button class="btn" data-target="notes">Go to Notes</button>
-            <button class="btn secondary" id="quickAdd">Quick add note (N)</button>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="content">
-          <h3 style="margin-top:0">Tips</h3>
-          <ul style="margin:0; padding-left:18px; color:var(--muted)">
-            <li>Use the sidebar to switch subsections.</li>
-            <li>Attach files—PDFs, images, docs—to any note.</li>
-            <li>Search filters notes by title and description.</li>
-            <li>Keyboard shortcuts: 1–4 for sections, N to add a note.</li>
-          </ul>
-        </div>
-      </div>
+    <div id="blog" class="section active">
+        <h2>Write a Blog Post</h2>
+        <input type="text" id="blog-title" placeholder="Blog Title">
+        <textarea id="blog-content" rows="10" placeholder="Write your blog here..."></textarea>
+        <button onclick="addBlogPost()">Add Post</button>
+        <div id="blog-posts"></div>
     </div>
 
-    <!-- Sections -->
-    <div class="sections">
-      <!-- Home -->
-      <section id="home" class="active">
-        <div class="card">
-          <div class="content">
-            <h2 style="margin-top:0">Welcome</h2>
-            <p>Everything you need to keep your study materials tidy and accessible. Jump into Notes to start adding content.</p>
-          </div>
+    <div id="notes" class="section">
+        <h2>Notes</h2>
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('maths')">Maths</button>
+            <button class="tab-button" onclick="showTab('physics')">Physics</button>
+            <button class="tab-button" onclick="showTab('cprog')">C Programming</button>
+            <button class="tab-button" onclick="showTab('enc')">ENC</button>
         </div>
-      </section>
-
-      <!-- Notes -->
-      <section id="notes">
-        <div class="notes-panel">
-          <aside class="sidebar">
-            <h3>Subsections</h3>
-            <div class="sub-list" id="subList">
-              <button class="active" data-sub="Maths">Maths</button>
-              <button data-sub="Physics">Physics</button>
-              <button data-sub="C Programming">C Programming</button>
-              <button data-sub="ECE">ECE</button>
-            </div>
-          </aside>
-
-          <div class="notes-content">
-            <div class="toolbar">
-              <input class="input" id="searchInput" placeholder="Search notes..."/>
-              <select class="select" id="sortSelect">
-                <option value="newest">Newest first</option>
-                <option value="oldest">Oldest first</option>
-                <option value="title">Title A→Z</option>
-              </select>
-              <button class="ghost" id="addNoteBtn">Add note</button>
-              <span style="margin-left:auto; color:var(--muted)">Current: <strong id="currentSub">Maths</strong></span>
-            </div>
-            <div id="notesList"></div>
-          </div>
+        <div id="maths" class="tab-content active">
+            <h3>Maths Notes</h3>
+            <textarea rows="10" placeholder="Upload or write Maths notes here..."></textarea>
+            <button>Save Notes</button>
         </div>
-      </section>
-
-      <!-- About -->
-      <section id="about">
-        <div class="card">
-          <div class="content">
-            <h2 style="margin-top:0">About this site</h2>
-            <p>This single‑page app stores notes in your browser using local storage. It’s fast, responsive, and designed for smooth, delightful interactions.</p>
-          </div>
+        <div id="physics" class="tab-content">
+            <h3>Physics Notes</h3>
+            <textarea rows="10" placeholder="Upload or write Physics notes here..."></textarea>
+            <button>Save Notes</button>
         </div>
-      </section>
-
-      <!-- Contact -->
-      <section id="contact">
-        <div class="card">
-          <div class="content">
-            <h2 style="margin-top:0">Contact</h2>
-            <p>Want to extend this with cloud sync or authentication? Reach out and we can plan the next iteration.</p>
-          </div>
+        <div id="cprog" class="tab-content">
+            <h3>C Programming Notes</h3>
+            <textarea rows="10" placeholder="Upload or write C Programming notes here..."></textarea>
+            <button>Save Notes</button>
         </div>
-      </section>
+        <div id="enc" class="tab-content">
+            <h3>ENC Notes</h3>
+            <textarea rows="10" placeholder="Upload or write ENC notes here..."></textarea>
+            <button>Save Notes</button>
+        </div>
     </div>
-  </main>
 
-  <!-- Modal -->
-  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="modal-header">
-        <h3 id="modalTitle" style="margin:0">Add note</h3>
-        <button class="icon-btn" id="closeModal" aria-label="Close">✕</button>
-      </div>
-      <div class="modal-body">
-        <label>
-          <div style="margin-bottom:6px">Title</div>
-          <input class="input" id="noteTitle" placeholder="e.g., Fourier series basics"/>
-        </label>
-        <label>
-          <div style="margin-bottom:6px">Description</div>
-          <textarea class="input" id="noteDesc" rows="4" placeholder="Key points, formulas, or summary"></textarea>
-        </label>
-        <label>
-          <div style="margin-bottom:6px">Attach file (optional)</div>
-          <input type="file" class="input" id="noteFile" />
-        </label>
-      </div>
-      <div class="modal-footer">
-        <button class="ghost" id="cancelModal">Cancel</button>
-        <button class="btn" id="saveNote">Save note</button>
-      </div>
-    </div>
-  </div>
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
 
-  <footer>
-    <small>© 2026 Study Notes Hub — Built for smooth study workflows.</small>
-  </footer>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
 
-  <script>
-    // State
-    const sections = ["home","notes","about","contact"];
-    const subs = ["Maths","Physics","C Programming","ECE"];
-    let currentSection = "home";
-    let currentSub = "Maths";
-    let notes = JSON.parse(localStorage.getItem("notes-data") || "{}"); // {sub: [note,...]}
-    subs.forEach(s => { if(!notes[s]) notes[s] = []; });
+        function addBlogPost() {
+            const title = document.getElementById('blog-title').value;
+            const content = document.getElementById('blog-content').value;
+            if (title && content) {
+                const postsDiv = document.getElementById('blog-posts');
+                const post = document.createElement('div');
+                post.className = 'blog-post';
+                post.innerHTML = `<h4>${title}</h4><p>${content}</p>`;
+                postsDiv.appendChild(post);
+                // Save to localStorage (simple persistence)
+                const posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+                posts.push({ title, content });
+                localStorage.setItem('blogPosts', JSON.stringify(posts));
+                document.getElementById('blog-title').value = '';
+                document.getElementById('blog-content').value = '';
+            }
+        }
 
-    // Helpers
-    const $ = sel => document.querySelector(sel);
-    const $$ = sel => Array.from(document.querySelectorAll(sel));
-    const saveNotes = () => localStorage.setItem("notes-data", JSON.stringify(notes));
-    const formatDate = ts => new Date(ts).toLocaleString();
-
-    // Navigation
-    const switchSection = id => {
-      sections.forEach(s => {
-        const el = document.getElementById(s);
-        el.classList.toggle("active", s === id);
-      });
-      $$(".nav-links button").forEach(b => b.classList.toggle("active", b.dataset.target === id));
-      currentSection = id;
-      // subtle scroll into view
-      document.getElementById(id).scrollIntoView({behavior:"smooth", block:"start"});
-    };
-
-    $$(".nav-links button").forEach(btn=>{
-      btn.addEventListener("click", ()=> switchSection(btn.dataset.target));
-    });
-    $$(".cta .btn").forEach(btn=>{
-      btn.addEventListener("click", ()=> switchSection(btn.dataset.target));
-    });
-
-    // Keyboard shortcuts
-    document.addEventListener("keydown", (e)=>{
-      if(["INPUT","TEXTAREA"].includes(document.activeElement.tagName)) return;
-      if(e.key === "1") switchSection("home");
-      if(e.key === "2") switchSection("notes");
-      if(e.key === "3") switchSection("about");
-      if(e.key === "4") switchSection("contact");
-      if(e.key.toLowerCase() === "n") openModal();
-    });
-
-    // Subsection switching
-    const renderSubButtons = () => {
-      $$("#subList button").forEach(b=>{
-        b.classList.toggle("active", b.dataset.sub === currentSub);
-      });
-      $("#currentSub").textContent = currentSub;
-    };
-    $$("#subList button").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        currentSub = btn.dataset.sub;
-        renderSubButtons();
-        renderNotes();
-      });
-    });
-
-    // Notes rendering
-    const renderNotes = ()=>{
-      const list = $("#notesList");
-      const query = $("#searchInput").value.trim().toLowerCase();
-      const sort = $("#sortSelect").value;
-      let items = [...notes[currentSub]];
-
-      if(query){
-        items = items.filter(n =>
-          n.title.toLowerCase().includes(query) ||
-          n.desc.toLowerCase().includes(query)
-        );
-      }
-      if(sort === "newest") items.sort((a,b)=> b.ts - a.ts);
-      if(sort === "oldest") items.sort((a,b)=> a.ts - b.ts);
-      if(sort === "title") items.sort((a,b)=> a.title.localeCompare(b.title));
-
-      list.innerHTML = items.length ? "" :
-        `<div class="note-card"><div class="note-meta">No notes yet in ${currentSub}. Add one!</div></div>`;
-
-      items.forEach((n, idx)=>{
-        const card = document.createElement("div");
-        card.className = "note-card";
-        card.innerHTML = `
-          <div class="note-title">${n.title}</div>
-          <div class="note-meta">Saved ${formatDate(n.ts)}${n.fileName ? " • File: "+n.fileName : ""}</div>
-          <div style="margin-bottom:8px">${n.desc ? n.desc.replace(/</g,"&lt;") : ""}</div>
-          <div class="note-actions">
-            ${n.fileUrl ? `<a class="icon-btn" href="${n.fileUrl}" target="_blank" rel="noopener">Open file</a>` : ""}
-            <button class="icon-btn icon-danger" data-del="${idx}">Delete</button>
-          </div>
-        `;
-        list.appendChild(card);
-      });
-
-      // Delete handlers
-      $$("#notesList [data-del]").forEach(btn=>{
-        btn.addEventListener("click", ()=>{
-          const i = Number(btn.dataset.del);
-          notes[currentSub].splice(i,1);
-          saveNotes();
-          renderNotes();
-        });
-      });
-    };
-
-    $("#searchInput").addEventListener("input", renderNotes);
-    $("#sortSelect").addEventListener("change", renderNotes);
-
-    // Modal logic
-    const backdrop = $("#modalBackdrop");
-    const modal = backdrop.querySelector(".modal");
-    const openModal = ()=>{
-      backdrop.style.display = "flex";
-      setTimeout(()=> modal.classList.add("show"), 10);
-      $("#noteTitle").focus();
-    };
-    const closeModal = ()=>{
-      modal.classList.remove("show");
-      setTimeout(()=> backdrop.style.display = "none", 200);
-      $("#noteTitle").value = "";
-      $("#noteDesc").value = "";
-      $("#noteFile").value = "";
-    };
-    $("#addNoteBtn").addEventListener("click", openModal);
-    $("#quickAdd").addEventListener("click", ()=>{
-      switchSection("notes");
-      openModal();
-    });
-    $("#closeModal").addEventListener("click", closeModal);
-    $("#cancelModal").addEventListener("click", closeModal);
-    backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
-
-    // Save note
-    $("#saveNote").addEventListener("click", async ()=>{
-      const title = $("#noteTitle").value.trim();
-      const desc = $("#noteDesc").value.trim();
-      const file = $("#noteFile").files[0];
-
-      if(!title){
-        alert("Please add a title.");
-        return;
-      }
-
-      let fileUrl = "";
-      let fileName = "";
-      if(file){
-        // Create an object URL (local, temporary)
-        fileUrl = URL.createObjectURL(file);
-        fileName = file.name;
-      }
-
-      notes[currentSub].push({
-        title, desc, fileUrl, fileName, ts: Date.now()
-      });
-      saveNotes();
-      closeModal();
-      renderNotes();
-    });
-
-    // Initial render
-    renderSubButtons();
-    renderNotes();
-  </script>
+        // Load saved blog posts on page load
+        window.onload = function() {
+            const posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+            const postsDiv = document.getElementById('blog-posts');
+            posts.forEach(p => {
+                const post = document.createElement('div');
+                post.className = 'blog-post';
+                post.innerHTML = `<h4>${p.title}</h4><p>${p.content}</p>`;
+                postsDiv.appendChild(post);
+            });
+        };
+    </script>
 </body>
 </html>

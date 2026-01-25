@@ -2,181 +2,158 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>karibasu | Blog</title>
+<title>Karibasu Blog</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #f5faff;
-  color: #1d3557;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
 }
 
-/* Header */
 header {
-  background: linear-gradient(90deg, #a8dadc, #bde0fe);
-  padding: 25px;
+  background: #121212;
+  color: white;
+  padding: 20px;
   text-align: center;
   font-size: 28px;
-  font-weight: bold;
   letter-spacing: 2px;
 }
 
-/* Buttons */
+#adminPanel {
+  display: none;
+  padding: 20px;
+  background: white;
+  margin: 20px;
+  border-radius: 8px;
+}
+
+input, textarea, button {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  font-size: 16px;
+}
+
 button {
-  background: #457b9d;
+  background: black;
   color: white;
   border: none;
-  padding: 12px 25px;
-  border-radius: 30px;
   cursor: pointer;
-  font-size: 16px;
-  transition: all 0.3s ease;
 }
 
 button:hover {
-  background: #1d3557;
-  transform: scale(1.1);
+  opacity: 0.8;
 }
 
-/* Sections */
-section {
-  padding: 40px;
-  text-align: center;
+#blogs {
+  padding: 20px;
 }
 
 .blog-card {
   background: white;
-  padding: 20px;
-  margin: 15px auto;
-  max-width: 600px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  animation: fadeUp 0.6s ease;
-}
-
-/* Login Modal */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  width: 300px;
-  text-align: center;
-}
-
-input, textarea {
-  width: 90%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 15px;
+  margin-bottom: 15px;
   border-radius: 8px;
-  border: 1px solid #ccc;
 }
 
-/* Animation */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+.blog-card h3 {
+  margin-top: 0;
 }
 </style>
 </head>
 
 <body>
 
-<header>karibasu</header>
+<header>
+  Karibasu
+</header>
 
-<section>
-  <button onclick="openLogin()">✍ Write Blog (Admin)</button>
-</section>
-
-<section id="adminPanel" style="display:none;">
-  <h2>Admin Panel</h2>
-  <input id="title" placeholder="Blog title">
-  <textarea id="content" rows="5" placeholder="Write your blog..."></textarea><br>
-  <button onclick="addBlog()">Post Blog</button>
-</section>
-
-<section>
-  <h2>Blogs</h2>
-  <div id="blogs"></div>
-</section>
-
-<!-- Login Modal -->
-<div class="modal" id="loginModal">
-  <div class="modal-content">
-    <h3>Admin Login</h3>
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-  </div>
+<!-- LOGIN -->
+<div id="loginModal" style="padding:20px">
+  <input type="password" id="password" placeholder="Admin password">
+  <button onclick="login()">Login</button>
 </div>
 
-<script>
-const ADMIN_PASSWORD = "karibasu29";
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <h2>Add New Blog</h2>
+  <input type="text" id="title" placeholder="Blog Title">
+  <textarea id="content" rows="5" placeholder="Blog Content"></textarea>
+  <button onclick="addBlog()">Publish</button>
+</div>
 
-/* Open login */
-function openLogin() {
-  document.getElementById("loginModal").style.display = "flex";
-}
+<!-- BLOG POSTS -->
+<div id="blogs"></div>
 
-/* Login */
-function login() {
-  const pass = document.getElementById("password").value;
-  if (pass === ADMIN_PASSWORD) {
-    localStorage.setItem("admin", "true");
-    document.getElementById("loginModal").style.display = "none";
-    document.getElementById("adminPanel").style.display = "block";
-  } else {
-    alert("Wrong password");
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, serverTimestamp } 
+  from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCHpgQ8xhy8191riHGHHV9Q-lSLnS1opwg",
+    authDomain: "karibasu-blog.firebaseapp.com",
+    projectId: "karibasu-blog",
+    storageBucket: "karibasu-blog.firebasestorage.app",
+    messagingSenderId: "1042679795290",
+    appId: "1:1042679795290:web:aac92fe10696ac7cee9263"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const ADMIN_PASSWORD = "karibasu123";
+
+  window.login = function () {
+    const pass = document.getElementById("password").value;
+    if (pass === ADMIN_PASSWORD) {
+      document.getElementById("loginModal").style.display = "none";
+      document.getElementById("adminPanel").style.display = "block";
+    } else {
+      alert("Wrong password");
+    }
+  };
+
+  window.addBlog = async function () {
+    const title = document.getElementById("title").value;
+    const content = document.getElementById("content").value;
+
+    if (!title || !content) {
+      alert("Fill all fields");
+      return;
+    }
+
+    await addDoc(collection(db, "blogs"), {
+      title,
+      content,
+      time: serverTimestamp()
+    });
+
+    document.getElementById("title").value = "";
+    document.getElementById("content").value = "";
+
+    loadBlogs();
+  };
+
+  async function loadBlogs() {
+    const snapshot = await getDocs(collection(db, "blogs"));
+    const blogDiv = document.getElementById("blogs");
+    blogDiv.innerHTML = "";
+
+    snapshot.forEach(doc => {
+      const blog = doc.data();
+      blogDiv.innerHTML += `
+        <div class="blog-card">
+          <h3>${blog.title}</h3>
+          <p>${blog.content}</p>
+        </div>
+      `;
+    });
   }
-}
 
-/* Add blog */
-function addBlog() {
-  const title = document.getElementById("title").value;
-  const content = document.getElementById("content").value;
-
-  if (!title || !content) {
-    alert("Write something first");
-    return;
-  }
-
-  const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
-  blogs.push({ title, content });
-  localStorage.setItem("blogs", JSON.stringify(blogs));
-
-  document.getElementById("title").value = "";
-  document.getElementById("content").value = "";
   loadBlogs();
-}
-
-/* Load blogs */
-function loadBlogs() {
-  const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
-  const container = document.getElementById("blogs");
-  container.innerHTML = "";
-
-  blogs.forEach(b => {
-    const div = document.createElement("div");
-    div.className = "blog-card";
-    div.innerHTML = `<h3>${b.title}</h3><p>${b.content}</p>`;
-    container.appendChild(div);
-  });
-}
-
-/* On load */
-if (localStorage.getItem("admin") === "true") {
-  document.getElementById("adminPanel").style.display = "block";
-}
-loadBlogs();
 </script>
 
 </body>

@@ -4,162 +4,168 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Karibasu Jadar's Blog & Notes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #333;
-            animation: backgroundShift 10s infinite alternate;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            animation: bgShift 15s ease-in-out infinite alternate;
         }
-        @keyframes backgroundShift {
+        @keyframes bgShift {
             0% { background-position: 0% 50%; }
             100% { background-position: 100% 50%; }
         }
-        header {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        .dark-mode {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #ecf0f1;
         }
-        h1 {
-            margin: 0;
-            color: #ff6b6b;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        nav {
-            background: #4ecdc4;
-            padding: 10px;
-            text-align: center;
-        }
-        nav button {
-            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+        .card {
             border: none;
-            padding: 10px 20px;
-            margin: 0 10px;
-            color: white;
-            font-size: 1.2em;
-            cursor: pointer;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .btn-custom {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            border: none;
             border-radius: 25px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
         }
-        nav button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 10px rgba(0,0,0,0.2);
+        .btn-custom:hover {
+            transform: scale(1.05);
         }
-        nav button:active {
-            transform: scale(0.95);
+        .header-bg {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
-        .section {
-            display: none;
-            padding: 20px;
-            max-width: 800px;
-            margin: 20px auto;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        .tab-content {
+            animation: fadeIn 0.5s ease-in;
         }
-        .active {
-            display: block;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
+        .pdf-link {
+            color: #007bff;
+            text-decoration: none;
         }
-        .tab-button {
-            background: #ffeaa7;
-            border: none;
-            padding: 10px 15px;
-            margin: 0 5px;
-            cursor: pointer;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-        .tab-button:hover {
-            background: #fab1a0;
-            transform: translateY(-5px);
-        }
-        .tab-button.active {
-            background: #fd79a8;
-            color: white;
-        }
-        textarea, input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        button {
-            background: #6c5ce7;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.3s ease;
-        }
-        button:hover {
-            background: #a29bfe;
-        }
-        .blog-post {
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
+        .pdf-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Karibasu Jadar's Blog & Notes</h1>
+    <header class="py-4 header-bg text-center text-white">
+        <h1 class="display-4 fw-bold">Karibasu Jadar's Blog & Notes</h1>
+        <button class="btn btn-outline-light mt-2" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+        <button class="btn btn-outline-light mt-2 ms-2" onclick="adminLogin()">Admin Login</button>
     </header>
-    <nav>
-        <button onclick="showSection('blog')">Blog</button>
-        <button onclick="showSection('notes')">Notes</button>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <button class="nav-link btn btn-link text-white" onclick="showSection('blog')">Blog</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link btn btn-link text-white" onclick="showSection('notes')">Notes</button>
+                </li>
+            </ul>
+        </div>
     </nav>
 
-    <div id="blog" class="section active">
-        <h2>Write a Blog Post</h2>
-        <input type="text" id="blog-title" placeholder="Blog Title">
-        <textarea id="blog-content" rows="10" placeholder="Write your blog here..."></textarea>
-        <button onclick="addBlogPost()">Add Post</button>
-        <div id="blog-posts"></div>
+    <div class="container mt-4">
+        <div id="blog" class="section active">
+            <h2 class="text-center mb-4"><i class="bi bi-journal-text"></i> Blog Posts</h2>
+            <div id="blog-posts" class="row"></div>
+            <div id="admin-blog" style="display: none;">
+                <h3>Add New Post</h3>
+                <input type="text" id="blog-title" class="form-control mb-2" placeholder="Title">
+                <textarea id="blog-content" class="form-control mb-2" rows="5" placeholder="Content"></textarea>
+                <button class="btn btn-custom" onclick="addBlogPost()">Add Post</button>
+            </div>
+        </div>
+
+        <div id="notes" class="section">
+            <h2 class="text-center mb-4"><i class="bi bi-file-earmark-pdf"></i> Notes</h2>
+            <ul class="nav nav-tabs justify-content-center mb-4">
+                <li class="nav-item">
+                    <button class="nav-link active" onclick="showTab('maths')">Maths</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" onclick="showTab('physics')">Physics</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" onclick="showTab('cprog')">C Programming</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" onclick="showTab('enc')">ENC</button>
+                </li>
+            </ul>
+            <div id="maths" class="tab-content active">
+                <h3>Maths Notes</h3>
+                <div id="maths-pdfs" class="row"></div>
+                <div id="admin-maths" style="display: none;">
+                    <input type="file" id="maths-file" class="form-control mb-2" accept=".pdf">
+                    <button class="btn btn-custom" onclick="uploadPDF('maths')">Upload PDF</button>
+                </div>
+            </div>
+            <div id="physics" class="tab-content">
+                <h3>Physics Notes</h3>
+                <div id="physics-pdfs" class="row"></div>
+                <div id="admin-physics" style="display: none;">
+                    <input type="file" id="physics-file" class="form-control mb-2" accept=".pdf">
+                    <button class="btn btn-custom" onclick="uploadPDF('physics')">Upload PDF</button>
+                </div>
+            </div>
+            <div id="cprog" class="tab-content">
+                <h3>C Programming Notes</h3>
+                <div id="cprog-pdfs" class="row"></div>
+                <div id="admin-cprog" style="display: none;">
+                    <input type="file" id="cprog-file" class="form-control mb-2" accept=".pdf">
+                    <button class="btn btn-custom" onclick="uploadPDF('cprog')">Upload PDF</button>
+                </div>
+            </div>
+            <div id="enc" class="tab-content">
+                <h3>ENC Notes</h3>
+                <div id="enc-pdfs" class="row"></div>
+                <div id="admin-enc" style="display: none;">
+                    <input type="file" id="enc-file" class="form-control mb-2" accept=".pdf">
+                    <button class="btn btn-custom" onclick="uploadPDF('enc')">Upload PDF</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div id="notes" class="section">
-        <h2>Notes</h2>
-        <div class="tabs">
-            <button class="tab-button active" onclick="showTab('maths')">Maths</button>
-            <button class="tab-button" onclick="showTab('physics')">Physics</button>
-            <button class="tab-button" onclick="showTab('cprog')">C Programming</button>
-            <button class="tab-button" onclick="showTab('enc')">ENC</button>
-        </div>
-        <div id="maths" class="tab-content active">
-            <h3>Maths Notes</h3>
-            <textarea rows="10" placeholder="Upload or write Maths notes here..."></textarea>
-            <button>Save Notes</button>
-        </div>
-        <div id="physics" class="tab-content">
-            <h3>Physics Notes</h3>
-            <textarea rows="10" placeholder="Upload or write Physics notes here..."></textarea>
-            <button>Save Notes</button>
-        </div>
-        <div id="cprog" class="tab-content">
-            <h3>C Programming Notes</h3>
-            <textarea rows="10" placeholder="Upload or write C Programming notes here..."></textarea>
-            <button>Save Notes</button>
-        </div>
-        <div id="enc" class="tab-content">
-            <h3>ENC Notes</h3>
-            <textarea rows="10" placeholder="Upload or write ENC notes here..."></textarea>
-            <button>Save Notes</button>
-        </div>
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        let isAdmin = false;
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        function adminLogin() {
+            const password = prompt('Enter admin password:');
+            if (password === 'admin123') {  // Change this password!
+                isAdmin = true;
+                document.getElementById('admin-blog').style.display = 'block';
+                document.getElementById('admin-maths').style.display = 'block';
+                document.getElementById('admin-physics').style.display = 'block';
+                document.getElementById('admin-cprog').style.display = 'block';
+                document.getElementById('admin-enc').style.display = 'block';
+                alert('Admin access granted!');
+            } else {
+                alert('Incorrect password.');
+            }
+        }
+
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
@@ -167,7 +173,7 @@
 
         function showTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             event.target.classList.add('active');
         }
@@ -177,11 +183,16 @@
             const content = document.getElementById('blog-content').value;
             if (title && content) {
                 const postsDiv = document.getElementById('blog-posts');
-                const post = document.createElement('div');
-                post.className = 'blog-post';
-                post.innerHTML = `<h4>${title}</h4><p>${content}</p>`;
-                postsDiv.appendChild(post);
-                // Save to localStorage (simple persistence)
+                const col = document.createElement('div');
+                col.className = 'col-md-6 mb-4';
+                col.innerHTML = `
+                    <div class="card p-3">
+                        <h5>${title}</h5>
+                        <p>${content}</p>
+                    </div>
+                `;
+                postsDiv.appendChild(col);
+                // Save to localStorage
                 const posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
                 posts.push({ title, content });
                 localStorage.setItem('blogPosts', JSON.stringify(posts));
@@ -190,15 +201,65 @@
             }
         }
 
-        // Load saved blog posts on page load
+        function uploadPDF(subject) {
+            const fileInput = document.getElementById(`${subject}-file`);
+            const file = fileInput.files[0];
+            if (file && file.type === 'application/pdf') {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const pdfsDiv = document.getElementById(`${subject}-pdfs`);
+                    const col = document.createElement('div');
+                    col.className = 'col-md-4 mb-3';
+                    col.innerHTML = `
+                        <div class="card p-3 text-center">
+                            <i class="bi bi-file-earmark-pdf-fill fs-1 text-danger"></i>
+                            <a href="${e.target.result}" class="pdf-link" download="${file.name}">${file.name}</a>
+                        </div>
+                    `;
+                    pdfsDiv.appendChild(col);
+                    // Save to localStorage (for demo; in real app, upload to server)
+                    const pdfs = JSON.parse(localStorage.getItem(`${subject}Pdfs`) || '[]');
+                    pdfs.push({ name: file.name, url: e.target.result });
+                    localStorage.setItem(`${subject}Pdfs`, JSON.stringify(pdfs));
+                };
+                reader.readAsDataURL(file);
+                fileInput.value = '';
+            } else {
+                alert('Please select a valid PDF file.');
+            }
+        }
+
+        // Load saved data on page load
         window.onload = function() {
+            // Load blogs
             const posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
             const postsDiv = document.getElementById('blog-posts');
             posts.forEach(p => {
-                const post = document.createElement('div');
-                post.className = 'blog-post';
-                post.innerHTML = `<h4>${p.title}</h4><p>${p.content}</p>`;
-                postsDiv.appendChild(post);
+                const col = document.createElement('div');
+                col.className = 'col-md-6 mb-4';
+                col.innerHTML = `
+                    <div class="card p-3">
+                        <h5>${p.title}</h5>
+                        <p>${p.content}</p>
+                    </div>
+                `;
+                postsDiv.appendChild(col);
+            });
+            // Load PDFs for each subject
+            ['maths', 'physics', 'cprog', 'enc'].forEach(subject => {
+                const pdfs = JSON.parse(localStorage.getItem(`${subject}Pdfs`) || '[]');
+                const pdfsDiv = document.getElementById(`${subject}-pdfs`);
+                pdfs.forEach(pdf => {
+                    const col = document.createElement('div');
+                    col.className = 'col-md-4 mb-3';
+                    col.innerHTML = `
+                        <div class="card p-3 text-center">
+                            <i class="bi bi-file-earmark-pdf-fill fs-1 text-danger"></i>
+                            <a href="${pdf.url}" class="pdf-link" download="${pdf.name}">${pdf.name}</a>
+                        </div>
+                    `;
+                    pdfsDiv.appendChild(col);
+                });
             });
         };
     </script>

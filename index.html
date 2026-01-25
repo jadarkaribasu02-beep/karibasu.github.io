@@ -9,44 +9,68 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f4f6f8;
+  background: #f5f9ff;
 }
 
+/* HEADER */
 header {
-  background: #121212;
+  background: #0d1b2a;
   color: white;
   padding: 20px;
   text-align: center;
-  font-size: 28px;
+  font-size: 30px;
   letter-spacing: 2px;
 }
 
-#adminPanel {
-  display: none;
-  padding: 20px;
-  background: white;
-  margin: 20px;
-  border-radius: 8px;
+/* LOGIN SECTION */
+#loginSection {
+  background: #e0ecff;
+  padding: 15px;
+  text-align: center;
 }
 
-input, textarea, button {
-  width: 100%;
-  padding: 10px;
-  margin: 8px 0;
-  font-size: 16px;
+#loginSection input {
+  padding: 8px;
+  width: 200px;
 }
 
-button {
-  background: black;
+#loginSection button {
+  padding: 8px 15px;
+  background: #0d1b2a;
   color: white;
   border: none;
   cursor: pointer;
 }
 
-button:hover {
-  opacity: 0.8;
+/* HERO SECTION */
+#hero {
+  padding: 20px;
+  text-align: center;
 }
 
+#hero img {
+  width: 120px;
+  margin: 10px;
+  border-radius: 15px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+/* ADMIN PANEL */
+#adminPanel {
+  display: none;
+  padding: 20px;
+  background: white;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+/* BLOG */
 #blogs {
   padding: 20px;
 }
@@ -55,32 +79,36 @@ button:hover {
   background: white;
   padding: 15px;
   margin-bottom: 15px;
-  border-radius: 8px;
-}
-
-.blog-card h3 {
-  margin-top: 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  Karibasu
-</header>
+<header>Karibasu</header>
 
-<!-- LOGIN -->
-<div id="loginModal" style="padding:20px">
+<!-- LOGIN SECTION (3 lines style) -->
+<div id="loginSection">
   <input type="password" id="password" placeholder="Admin password">
   <button onclick="login()">Login</button>
 </div>
 
+<!-- MAIN PAGE CUTE SECTION -->
+<div id="hero">
+  <h2>Welcome to my little world 💙</h2>
+
+  <img src="https://i.imgur.com/6qKZ5wT.png" alt="cat">
+  <img src="https://i.imgur.com/jt6pZlQ.png" alt="dog">
+  <img src="https://i.imgur.com/4AiXzf8.png" alt="butterfly">
+</div>
+
 <!-- ADMIN PANEL -->
 <div id="adminPanel">
-  <h2>Add New Blog</h2>
-  <input type="text" id="title" placeholder="Blog Title">
-  <textarea id="content" rows="5" placeholder="Blog Content"></textarea>
+  <h2>Write a Blog ✍️</h2>
+  <input type="text" id="title" placeholder="Blog Title"><br>
+  <textarea id="content" rows="5" placeholder="Blog Content"></textarea><br>
   <button onclick="addBlog()">Publish</button>
 </div>
 
@@ -88,72 +116,72 @@ button:hover {
 <div id="blogs"></div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, serverTimestamp } 
-  from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, serverTimestamp }
+from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCHpgQ8xhy8191riHGHHV9Q-lSLnS1opwg",
-    authDomain: "karibasu-blog.firebaseapp.com",
-    projectId: "karibasu-blog",
-    storageBucket: "karibasu-blog.firebasestorage.app",
-    messagingSenderId: "1042679795290",
-    appId: "1:1042679795290:web:aac92fe10696ac7cee9263"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyCHpgQ8xhy8191riHGHHV9Q-lSLnS1opwg",
+  authDomain: "karibasu-blog.firebaseapp.com",
+  projectId: "karibasu-blog",
+  storageBucket: "karibasu-blog.firebasestorage.app",
+  messagingSenderId: "1042679795290",
+  appId: "1:1042679795290:web:aac92fe10696ac7cee9263"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  const ADMIN_PASSWORD = "karibasu123";
+const ADMIN_PASSWORD = "karibasu123";
 
-  window.login = function () {
-    const pass = document.getElementById("password").value;
-    if (pass === ADMIN_PASSWORD) {
-      document.getElementById("loginModal").style.display = "none";
-      document.getElementById("adminPanel").style.display = "block";
-    } else {
-      alert("Wrong password");
-    }
-  };
+window.login = function () {
+  const pass = document.getElementById("password").value;
+  if (pass === ADMIN_PASSWORD) {
+    document.getElementById("adminPanel").style.display = "block";
+    alert("Welcome Admin 🖤");
+  } else {
+    alert("Wrong password");
+  }
+};
 
-  window.addBlog = async function () {
-    const title = document.getElementById("title").value;
-    const content = document.getElementById("content").value;
+window.addBlog = async function () {
+  const title = document.getElementById("title").value;
+  const content = document.getElementById("content").value;
 
-    if (!title || !content) {
-      alert("Fill all fields");
-      return;
-    }
-
-    await addDoc(collection(db, "blogs"), {
-      title,
-      content,
-      time: serverTimestamp()
-    });
-
-    document.getElementById("title").value = "";
-    document.getElementById("content").value = "";
-
-    loadBlogs();
-  };
-
-  async function loadBlogs() {
-    const snapshot = await getDocs(collection(db, "blogs"));
-    const blogDiv = document.getElementById("blogs");
-    blogDiv.innerHTML = "";
-
-    snapshot.forEach(doc => {
-      const blog = doc.data();
-      blogDiv.innerHTML += `
-        <div class="blog-card">
-          <h3>${blog.title}</h3>
-          <p>${blog.content}</p>
-        </div>
-      `;
-    });
+  if (!title || !content) {
+    alert("Fill all fields");
+    return;
   }
 
+  await addDoc(collection(db, "blogs"), {
+    title,
+    content,
+    time: serverTimestamp()
+  });
+
+  document.getElementById("title").value = "";
+  document.getElementById("content").value = "";
+
   loadBlogs();
+};
+
+async function loadBlogs() {
+  const snapshot = await getDocs(collection(db, "blogs"));
+  const blogDiv = document.getElementById("blogs");
+  blogDiv.innerHTML = "";
+
+  snapshot.forEach(doc => {
+    const blog = doc.data();
+    blogDiv.innerHTML += `
+      <div class="blog-card">
+        <h3>${blog.title}</h3>
+        <p>${blog.content}</p>
+      </div>
+    `;
+  });
+}
+
+loadBlogs();
 </script>
 
 </body>
